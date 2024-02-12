@@ -3,6 +3,7 @@ package com.riseup.bloggingapp.controllers;
 
 import com.riseup.bloggingapp.payloads.ApiResponse;
 import com.riseup.bloggingapp.payloads.PostDto;
+import com.riseup.bloggingapp.payloads.PostResponse;
 import com.riseup.bloggingapp.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,9 +44,10 @@ public class PostController {
 
     //Get all posts
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPost() {
-        List<PostDto> allPost = this.postService.getAllPost();
-        return new ResponseEntity<List<PostDto>>(allPost, HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
+        PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize);
+        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
     }
 
     //Get post details by id

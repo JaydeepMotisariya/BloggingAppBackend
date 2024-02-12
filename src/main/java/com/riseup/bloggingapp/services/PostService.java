@@ -2,6 +2,7 @@ package com.riseup.bloggingapp.services;
 
 import com.riseup.bloggingapp.entities.Post;
 import com.riseup.bloggingapp.payloads.PostDto;
+import com.riseup.bloggingapp.payloads.PostResponse;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface PostService {
     void deletePost(Integer postId);
 
     //Get All Post
-    List<PostDto> getAllPost();
+    PostResponse getAllPost(Integer pageNumber, Integer pageSize);
 
     //Get Single Post
     PostDto getPostById(Integer postId);
