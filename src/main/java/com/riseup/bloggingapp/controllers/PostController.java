@@ -1,6 +1,7 @@
 package com.riseup.bloggingapp.controllers;
 
 
+import com.riseup.bloggingapp.config.AppConstants;
 import com.riseup.bloggingapp.payloads.ApiResponse;
 import com.riseup.bloggingapp.payloads.PostDto;
 import com.riseup.bloggingapp.payloads.PostResponse;
@@ -44,11 +45,11 @@ public class PostController {
 
     //Get all posts
     @GetMapping("/posts")
-    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-                                                   @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-                                                   @RequestParam(value = "sortDirection", defaultValue = "asc", required = false) String sortDirection) {
-        PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize,sortBy,sortDirection);
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                   @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                   @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+                                                   @RequestParam(value = "sortDirection", defaultValue = AppConstants.SORT_DIRECTION, required = false) String sortDirection) {
+        PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortDirection);
         return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
     }
 
@@ -72,6 +73,14 @@ public class PostController {
     public ApiResponse deletePost(@PathVariable Integer postId) {
         this.postService.deletePost(postId);
         return new ApiResponse("Post is successfully deleted!!", true);
+    }
+
+    //Search Post
+    @GetMapping("/posts/search/{keywords}")
+    public ResponseEntity<List<PostDto>> searchPostByTitle(@PathVariable("keywords") String keywords) {
+        List<PostDto> result = this.postService.searchPosts(keywords);
+        return new ResponseEntity<List<PostDto>>(result, HttpStatus.OK);
+
     }
 
 
